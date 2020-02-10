@@ -1,0 +1,169 @@
+# Import library yang akan digunakan
+library(openxlsx)
+library(corrplot)
+
+# Import dataset real estate
+dataset_real.estate <- read.xlsx("D:/Document/Remember ME/Github/R/regression-algorithm-for-estimation/Dataset/RealEstateValuationDataSet.xlsx")
+View(dataset_real.estate)
+
+# Data sesuai npm 04 + 119 = 123 (maka ambil baris data ke 04 - 123)
+real.estate_npm.004 = dataset_real.estate [4:123,]
+
+# Lihat data dan banyaknya data
+View(real.estate_npm.004)
+dim(real.estate_npm.004)
+
+# Lihat Korelasi
+cor_data <- cor(real.estate_npm.004)
+cor_data
+
+# Lihat name feature
+names(real.estate_npm.004)
+
+# Nilai tukar mata uang NTW (New Taiwan Dollar)
+cr <- 0.042
+
+# PING/meter persegi (1 Ping = 3.3 meter squared)
+mt <- 1/3.3
+
+# Delete atribute kolom pertama
+real.estate_npm.004[1] <- NULL
+View(real.estate_npm.004)
+
+# Ubah name Feature
+# X1 untuk transaction.date
+# X2 untuk house.age
+# X3 untuk distance.to.the.nearest.MRT.station
+# X4 untuk number of convenience stores
+# X5 untuk latitude
+# X6 untuk longitude
+# HP untuk Harga Rumah sebelum dikonversi
+# Y untuk Harga rumah
+
+
+# Rename variabel kolom
+names(real.estate_npm.004)[c(1:7)] <- c("X1","X2","X3","X4","X5","X6","HP")
+View(real.estate_npm.004)
+
+# Mengubah satuan harga rumah (House price) dan mengubah variabel HP (House Price) menjadi Y
+real.estate_npm.004$Y <- real.estate_npm.004$HPr*mt*10000
+View(real.estate_npm.004)
+
+real.estate_npm.004[7] <- NULL
+View(real.estate_npm.004)
+
+# Hubungan antara harga rumah dan Tanggal Transaksi
+# Scatter plot
+plot(real.estate_npm.004$X1, real.estate_npm.004$Y, main="Scatterplot Harga Rumah vs Tanggal Transaksi", xlab="Tanggal Transaksi", ylab="Harga Rumah (NT$)", pch=19, cex=0.3, col="red")
+
+# Tambah fit line untuk menunjukkan relationship direction
+abline(lm(real.estate_npm.004$Y~real.estate_npm.004$X1)) #regression line(Y~X1)
+lines(lowess(real.estate_npm.004$X1, real.estate_npm.004$Y), col="green") #lowess line (x,y)
+
+# Lihat correlation
+cat("Korelasi antara Harga rumah dan tanggal transaksi adalah", cor(real.estate_npm.004$X1, real.estate_npm.004$Y))
+
+
+# Hubungan antara harga rumah dan umur rumah
+# Scatter plot
+plot(real.estate_npm.004$X2, real.estate_npm.004$Y, main="Scatterplot Harga Rumah vs Umur Rumah", xlab="Umur Rumah", ylab="Harga Rumah (NT$)", pch=19, cex=0.3, col="red")
+
+# Tambah fit line untuk menunjukkan relationship direction
+abline(lm(real.estate_npm.004$Y~real.estate_npm.004$X2)) #regression line(Y~X1)
+lines(lowess(real.estate_npm.004$X2, real.estate_npm.004$Y), col="green") #lowess line (x,y)
+
+# Lihat correlation
+cat("Korelasi antara Harga rumah dan umur rumah adalah", cor(real.estate_npm.004$X2, real.estate_npm.004$Y))
+
+
+
+
+# Hubungan antara harga rumah dan jarak ke stasiun MRT terdekat
+# Scatter plot
+plot(real.estate_npm.004$X3, real.estate_npm.004$Y, main="Scatterplot Harga Rumah vs Jarak ke Stasiun MRT Terdekat", xlab="Jarak ke Stasiun MRT Terdekat", ylab="Harga Rumah (NT$)", pch=19, cex=0.3, col="red")
+
+# Tambah fit line untuk menunjukkan relationship direction
+abline(lm(real.estate_npm.004$Y~real.estate_npm.004$X3)) #regression line(Y~X1)
+lines(lowess(real.estate_npm.004$X3, real.estate_npm.004$Y), col="green") #lowess line (x,y)
+
+# Lihat correlation
+cat("Korelasi antara Harga rumah dan jarak ke stasiun MRT terdekat adalah", cor(real.estate_npm.004$X3, real.estate_npm.004$Y))
+
+
+
+
+# Hubungan antara harga rumah dan sejumlah toko serba ada
+# Scatter plot
+plot(real.estate_npm.004$X4, real.estate_npm.004$Y, main="Scatterplot Harga Rumah vs Beberapa Toko Serba Ada", xlab="Beberapa Toko Serba Ada", ylab="Harga Rumah (NT$)", pch=19, cex=0.3, col="red")
+
+# Tambah fit line untuk menunjukkan relationship direction
+abline(lm(real.estate_npm.004$Y~real.estate_npm.004$X4)) #regression line(Y~X1)
+lines(lowess(real.estate_npm.004$X4, real.estate_npm.004$Y), col="green") #lowess line (x,y)
+
+# Lihat correlation
+cat("Korelasi antara Harga rumah dan beberapa toko serba ada adalah", cor(real.estate_npm.004$X4, real.estate_npm.004$Y))
+
+
+
+
+# Hubungan antara harga rumah dan latitude
+# Scatter plot
+plot(real.estate_npm.004$X5, real.estate_npm.004$Y, main="Scatterplot Harga Rumah vs Latitude", xlab="Latitude", ylab="Harga Rumah (NT$)", pch=19, cex=0.3, col="red")
+
+# Tambah fit line untuk menunjukkan relationship direction
+abline(lm(real.estate_npm.004$Y~real.estate_npm.004$X5)) #regression line(Y~X1)
+lines(lowess(real.estate_npm.004$X5, real.estate_npm.004$Y), col="green") #lowess line (x,y)
+
+# Lihat correlation
+cat("Korelasi antara Harga rumah dan latitude adalah", cor(real.estate_npm.004$X5, real.estate_npm.004$Y))
+
+
+
+
+# Hubungan antara harga rumah dan longitude
+# Scatter plot
+plot(real.estate_npm.004$X6, real.estate_npm.004$Y, main="Scatterplot Harga Rumah vs Longitude", xlab="Longitude", ylab="Harga Rumah (NT$)", pch=19, cex=0.3, col="red")
+
+# Tambah fit line untuk menunjukkan relationship direction
+abline(lm(real.estate_npm.004$Y~real.estate_npm.004$X6)) #regression line(Y~X1)
+lines(lowess(real.estate_npm.004$X6, real.estate_npm.004$Y), col="green") #lowess line (x,y)
+
+# Lihat correlation
+cat("Korelasi antara Harga rumah dan longitude adalah", cor(real.estate_npm.004$X6, real.estate_npm.004$Y))
+
+
+
+# Buat model untuk uji annova
+data.test = lm(real.estate$Y~., data = real.estate)
+anova(data.test)
+
+
+# Hapus atribut tanggal transaksi, umur rumah, jarak ke stasiun MRT, dan latitude, karena korelasi lemah
+# Jadi cuma diambil 2 atribut, yaitu sejumlah toko serba ada dan longitude karena korelasinya kuat dengan harga rumah
+# Dan menghapus atribut HP (HourPrice) sebelum di konversi ke nilai mata uang New TAiwan Dollar
+real.estate_npm.004[c(1,2,3,5)] <- NULL
+View(real.estate_npm.004)
+
+
+# Membuat data training
+data.training <- real.estate_npm.004[1:100,]
+View(data.training)
+dim(data.training)
+
+# Membuat data testing
+data.testing <- real.estate_npm.004[101:120,]
+View(data.testing)
+dim(data.testing)
+
+
+model_npm.004= lm (data.training$Y ~ data.training$X4 + data.training$X6, data = data.training)
+summary(model_npm.004)
+
+# Plot model data training
+plot(model_npm.004, which=1)
+
+
+prediksi <- predict(model_npm.004,newData = data.testing)
+prediksi
+
+
