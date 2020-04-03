@@ -1,5 +1,5 @@
 # regression-algorithm-for-estimation
-Regression Algorithm for Estimation Using R
+Regression Algorithm for Estimation (R)
 
 # Requirement
 - Programming Language : R
